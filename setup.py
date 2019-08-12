@@ -3,7 +3,7 @@ from distutils.core import setup
 setup(
     name='playerank',
     version='1.0',
-    packages=['towelstuff',],
+    packages=['playerank',],
     install_requires=[
           'pandas==0.23.4',
           'scipy==0.17.1',
