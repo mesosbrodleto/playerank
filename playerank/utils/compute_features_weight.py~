@@ -1,0 +1,25 @@
+#import .models
+from ..models import Weighter
+
+from ..features import qualityFeatures, relativeAggregation,goalScoredFeatures
+import sys
+#computing all quality features (passes accurate, passes failed, shots, etc.)
+
+def compute_feature_weights(output_path):
+
+    qualityFeat = qualityFeatures.qualityFeatures()
+    quality= qualityFeat.createFeature('playerank/data/events.json',entity = 'team'])
+    #computing goals scored for each team in each match
+    gs=goalScoredFeatures.goalScoredFeatures()
+    goals=gs.createFeature('playerank/data/matches.json')
+    #merging of quality features and goals scored
+    aggregation = relativeAggregation.relativeAggregation()
+    aggregation.set_features([quality,goals])
+    df = aggregation.aggregate(to_dataframe = True)
+
+    weighter = Weighter.Weighter(label_type='w-dl')
+    weighter.fit(df, 'goal-scored', filename=output_path)
+    print ("features weights stored in %s"%output_path)
+
+
+compute_feature_weights('playerank/conf/features_weigths.json')
