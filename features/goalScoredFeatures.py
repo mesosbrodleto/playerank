@@ -2,6 +2,7 @@ from .abstract import Feature
 from .wyscoutEventsDefinition import *
 import json
 from collections import defaultdict
+import glob
 
 
 class goalScoredFeatures(Feature):
@@ -18,12 +19,15 @@ class goalScoredFeatures(Feature):
         Output:
         list of documents in the format: match: matchId, entity: team, feature: feature, value: value
         """
-        
-        matches = json.load(open(matches_path))
+        matches =[]
+        for file in glob.glob("%s/*.json"%matches_path):
+            data = json.load(open(file))
+            matches += data
+            print ("[GoalScored features] added %s matches"%len(data))
         if select:
             matches = filter(select,matches)
         result =[]
-        
+
         for match in matches:
             for team in match['teamsData']:
                 document = {}
@@ -32,6 +36,6 @@ class goalScoredFeatures(Feature):
                 document['feature'] = 'goal-scored'
                 document['value'] = match['teamsData'][team]['score']
                 result.append(document)
-        
+
 
         return result
