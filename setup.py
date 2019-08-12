@@ -1,4 +1,4 @@
-rom distutils.core import setup
+from distutils.core import setup
 
 setup(
     name='playerank',
