@@ -50,7 +50,7 @@ class Weighter(BaseEstimator):
         self.label_type_ = label_type
         self.random_state_ = random_state
 
-    def fit(self, dataframe, target, scaled=False, var_threshold = 0.1 , filename='weights.json'):
+    def fit(self, dataframe, target, scaled=False, var_threshold = 0.001 , filename='weights.json'):
         """
         Compute weights of features.
 
@@ -77,9 +77,8 @@ class Weighter(BaseEstimator):
         sel = VarianceThreshold(var_threshold)
         X = sel.fit_transform(dataframe)
         selected_feature_names = [feature_names[i] for i, var in enumerate(list(sel.variances_)) if var > var_threshold]
-        print ("[Weighter] filtered features:", [feature_names[i] for i, var in enumerate(list(sel.variances_)) if var <= var_threshold])
+        print ("[Weighter] filtered features:", [(feature_names[i],var) for i, var in enumerate(list(sel.variances_)) if var <= var_threshold])
         dataframe = pd.DataFrame(X, columns=selected_feature_names)
-
         if self.label_type_ == 'w-dl':
             y = dataframe[target].apply(lambda x: 1 if x > 0 else -1)
         elif self.label_type_ == 'wd-l':
@@ -114,7 +113,6 @@ class Weighter(BaseEstimator):
         for feature, weight in sorted(zip(self.feature_names_, self.weights_),key = lambda x: x[1]):
             features_and_weights[feature]=  weight
         json.dump(features_and_weights, open('%s' %filename, 'w'))
-        print (sorted(zip(self.feature_names_, self.weights_),key = lambda x: x[1])[-10:])
         ## Save the object
         #pkl.dump(self, open('%s.pkl' %filename, 'wb'))
 
