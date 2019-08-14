@@ -30,9 +30,9 @@ r = requests.get(dataset_links['events'], stream=True)
 z = zipfile.ZipFile(io.BytesIO(r.content))
 z.extractall("data/events")
 #
-r = requests.get(dataset_links['teams'], stream=True)
-print (r.content, file=open('data/teams.json','w'))
+r = requests.get(dataset_links['teams'], stream=False)
+print (r.text, file=open('data/teams.json','w'))
 
 
-r = requests.get(dataset_links['players'], stream=True)
-print (r.content, file=open('data/players.json','w'))
+r = requests.get(dataset_links['players'], stream=False)
+print (r.text, file=open('data/players.json','w'))
