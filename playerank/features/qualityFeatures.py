@@ -24,40 +24,35 @@ class qualityFeatures(Feature):
         Output:
         list of dictionaries in the format: matchId -> entity -> feature -> value
         """
-        subevent2outcome={10: [1801, 1802],
+        event2subevent2outcome={
+                1:{10: [1801, 1802],
                  11: [1801, 1802],
                  12: [1801, 1802],
-                 13: [1801, 1802],
-                 20: [1702, 1703, 1701],
-                 21: [1702, 1703, 1701],
-                 22: [1702, 1703, 1701],
-                 23: [1702, 1703, 1701],
-                 24: [1702, 1703, 1701],
-                 25: [1702, 1703, 1701],
-                 #26: [1702, 1703, 1701], excluding time lost
-                 27: [1702, 1703, 1701],
-                 30: [1801, 1802],
+                 13: [1801, 1802]},
+                 2: [1702, 1703, 1701], #fouls aggregated into macroevent
+
+                 3 :{30: [1801, 1802],
                  31: [1801, 1802],
                  32: [1801, 1802],
                  33: [1801, 1802],
                  34: [1801, 1802],
                  35: [1802],
-                 36: [1801, 1802],
-                 40: [1801, 1802],
-                 60: [],
-                 70: [1801, 1802,101],
+                 36: [1801, 1802]},
+                 4: {40: [1801, 1802]},
+                 6: {60: []},
+                 7: {70: [1801, 1802,101],
                  71: [1801, 1802,101],
-                 72: [1401, 1302, 201, 1901, 1301, 2001, 301],
-                 80: [1801, 1802,302,301],
+                 72: [1401, 1302, 201, 1901, 1301, 2001, 301]},
+                 8: {80: [1801, 1802,302,301],
                  81: [1801, 1802,302,301],
                  82: [1801, 1802,302,301],
                  83: [1801, 1802,302,301],
                  84: [1801, 1802,302,301],
                  85: [1801, 1802,302,301],
-                 86: [1801, 1802,302,301],
+                 86: [1801, 1802,302,301]},
                  #90: [1801, 1802],
                  #91: [1801, 1802],
-                 100: [1801, 1802]}
+                 10: {100: [1801, 1802]}}
 
         aggregated_features = defaultdict(lambda : defaultdict(lambda: defaultdict(int)))
 
@@ -75,21 +70,31 @@ class qualityFeatures(Feature):
             events = filter(select,events)
 
         for evt in events:
-            if evt['subEventId'] in subevent2outcome:
+            if evt['eventId'] in event2subevent2outcome:
                 ent = evt['teamId'] #default
                 if entity == 'player':
                     ent = evt['playerId']
 
+                evtName =evt['eventName']
 
+                if type(event2subevent2outcome[evt['eventId']]) == dict:
+                    #hierarchy as event->subevent->tags
+                    if evt['subEventId'] not in event2subevent2outcome[evt['eventId']]:
+                        #malformed events
+                        continue #skip to next event
+                    tags = [x for x in evt['tags'] if x['id'] in event2subevent2outcome[evt['eventId']][evt['subEventId']]]
 
-                tags = [x for x in evt['tags'] if x['id'] in subevent2outcome[evt['subEventId']]]
+                    evtName+="-%s"%evt['subEventName']
+                else:
+                    #hierarchy as event->tags
+                    tags = [x for x in evt['tags'] if x['id'] in event2subevent2outcome[evt['eventId']]]
 
                 if len(tags)>0:
                     for tag in tags:
-                        aggregated_features[evt['matchId']][ent]["%s-%s-%s"%(evt['eventName'],evt['subEventName'],tag2name[tag['id']])]+=1
+                        aggregated_features[evt['matchId']][ent]["%s-%s"%(evtName,tag2name[tag['id']])]+=1
 
                 else:
-                    aggregated_features[evt['matchId']][ent]["%s-%s"%(evt['eventName'],evt['subEventName'])]+=1
+                    aggregated_features[evt['matchId']][ent]["%s"%(evtName)]+=1
         result =[]
         for match in aggregated_features:
             for entity in aggregated_features[match]:
