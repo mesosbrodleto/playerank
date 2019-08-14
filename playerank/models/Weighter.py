@@ -50,7 +50,7 @@ class Weighter(BaseEstimator):
         self.label_type_ = label_type
         self.random_state_ = random_state
 
-    def fit(self, dataframe, target, scaled=False, var_threshold = 0.1 filename='weights.json'):
+    def fit(self, dataframe, target, scaled=False, var_threshold = 0.1 , filename='weights.json'):
         """
         Compute weights of features.
 
