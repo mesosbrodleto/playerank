@@ -104,6 +104,7 @@ class Weighter(BaseEstimator):
         for feature, weight in sorted(zip(self.feature_names_, self.weights_),key = lambda x: x[1]):
             features_and_weights[feature]=  weight
         json.dump(features_and_weights, open('%s' %filename, 'w'))
+        print (sorted(zip(self.feature_names_, self.weights_),key = lambda x: x[1])[-5:])
         ## Save the object
         #pkl.dump(self, open('%s.pkl' %filename, 'wb'))
 
