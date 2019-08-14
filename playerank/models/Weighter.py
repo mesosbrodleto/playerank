@@ -1,6 +1,4 @@
 # /usr/local/bin/python
-import pickle as pkl
-import numpy as np
 from sklearn.base import BaseEstimator
 from sklearn.svm import LinearSVC
 from sklearn.model_selection import cross_val_score
@@ -8,7 +6,10 @@ from sklearn.model_selection import cross_val_score
 from sklearn.preprocessing import StandardScaler, LabelEncoder
 from sklearn.utils import check_random_state
 from sklearn.preprocessing import MinMaxScaler
+from sklearn.feature_selection import VarianceThreshold
 import json
+import pandas as pd
+import numpy as np
 
 class Weighter(BaseEstimator):
     """Automatic weighting of performance features
@@ -49,7 +50,7 @@ class Weighter(BaseEstimator):
         self.label_type_ = label_type
         self.random_state_ = random_state
 
-    def fit(self, dataframe, target, scaled=False, filename='weights.json'):
+    def fit(self, dataframe, target, scaled=False, var_threshold = 0.1 filename='weights.json'):
         """
         Compute weights of features.
 
@@ -70,6 +71,16 @@ class Weighter(BaseEstimator):
                 )
                 default: "weights"
         """
+        ##feature selection by variance, to delete outlier features
+        feature_names = list(dataframe.columns)
+        # normalize the data and then eliminate the variables with zero variance
+        sel = VarianceThreshold(var_threshold)
+        X = sel.fit_transform(dataframe)
+        selected_feature_names = [feature_names[i] for i, var in enumerate(list(sel.variances_)) if var > var_threshold]
+        print (sorted([(feature_names[i],var) for i, var in enumerate(list(sel.variances_)) if var <=var_threshold],
+            key = lambda x: x[1]))
+        dataframe = pd.DataFrame(X, columns=selected_feature_names)
+
         if self.label_type_ == 'w-dl':
             y = dataframe[target].apply(lambda x: 1 if x > 0 else -1)
         elif self.label_type_ == 'wd-l':
@@ -104,7 +115,7 @@ class Weighter(BaseEstimator):
         for feature, weight in sorted(zip(self.feature_names_, self.weights_),key = lambda x: x[1]):
             features_and_weights[feature]=  weight
         json.dump(features_and_weights, open('%s' %filename, 'w'))
-        print (sorted(zip(self.feature_names_, self.weights_),key = lambda x: x[1])[-5:])
+        print (sorted(zip(self.feature_names_, self.weights_),key = lambda x: x[1])[-10:])
         ## Save the object
         #pkl.dump(self, open('%s.pkl' %filename, 'wb'))
 
