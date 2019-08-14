@@ -39,13 +39,12 @@ class relativeAggregation(Aggregation):
         aggregated = defaultdict(lambda : defaultdict(lambda: defaultdict(int)))
         #format of aggregation: match,team,feature,valueTeam-valueOppositor
         result = []
-
         for document in featdata:
             match = document['match']
             entity = int(document['entity'])
             feature = document['feature']
             value = document['value']
-            aggregated[match][entity][feature] = value
+            aggregated[match][entity][feature] = int(value)
 
 
         for match in aggregated:
@@ -57,6 +56,7 @@ class relativeAggregation(Aggregation):
                     result_doc['match'] = match
                     result_doc['entity'] = entity
                     result_doc['name'] = feature
+                    value = aggregated[match][entity][feature]
                     if feature in aggregated[match][opponents]:
                         result_doc['value'] = value - aggregated[match][opponents][feature]
                     else:
@@ -72,7 +72,7 @@ class relativeAggregation(Aggregation):
             print ("[relativeAggregation] matches aggregated: %s"%len(featlist.keys()))
 
             df=pd.DataFrame(list(featlist.values())).fillna(0)
-            
+
             return df
         else:
             return result

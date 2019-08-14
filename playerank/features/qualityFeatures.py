@@ -65,6 +65,7 @@ class qualityFeatures(Feature):
         #  filtering out all the events from goalkeepers
         goalkeepers_ids = [player['wyId'] for player in players
                                 if player['role']['name']=='Goalkeeper']
+
         events = []
         for file in glob.glob("%s/*.json"%events_path):
             data = json.load(open(file))
@@ -86,7 +87,7 @@ class qualityFeatures(Feature):
                 if len(tags)>0:
                     for tag in tags:
                         aggregated_features[evt['matchId']][ent]["%s-%s-%s"%(evt['eventName'],evt['subEventName'],tag2name[tag['id']])]+=1
-                        
+
                 else:
                     aggregated_features[evt['matchId']][ent]["%s-%s"%(evt['eventName'],evt['subEventName'])]+=1
         result =[]

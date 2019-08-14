@@ -83,7 +83,7 @@ class Weighter(BaseEstimator):
             X = StandardScaler().fit_transform(X)
 
         self.feature_names_ = dataframe.columns
-        self.clf_ = LinearSVC(fit_intercept=True, dual = False,  max_iter = 10000,random_state=self.random_state_)
+        self.clf_ = LinearSVC(fit_intercept=True, dual = False,  max_iter = 50000,random_state=self.random_state_)
 
         #f1_score = np.mean(cross_val_score(self.clf_, X, y, cv=2, scoring='f1_weighted'))
         #self.f1_score_ = f1_score
@@ -104,7 +104,6 @@ class Weighter(BaseEstimator):
         for feature, weight in sorted(zip(self.feature_names_, self.weights_),key = lambda x: x[1]):
             features_and_weights[feature]=  weight
         json.dump(features_and_weights, open('%s' %filename, 'w'))
-
         ## Save the object
         #pkl.dump(self, open('%s.pkl' %filename, 'wb'))
 
