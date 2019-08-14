@@ -77,8 +77,7 @@ class Weighter(BaseEstimator):
         sel = VarianceThreshold(var_threshold)
         X = sel.fit_transform(dataframe)
         selected_feature_names = [feature_names[i] for i, var in enumerate(list(sel.variances_)) if var > var_threshold]
-        print (sorted([(feature_names[i],var) for i, var in enumerate(list(sel.variances_)) if var <=var_threshold],
-            key = lambda x: x[1]))
+        
         dataframe = pd.DataFrame(X, columns=selected_feature_names)
 
         if self.label_type_ == 'w-dl':
