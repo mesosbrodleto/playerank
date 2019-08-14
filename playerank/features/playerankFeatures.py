@@ -27,7 +27,8 @@ class playerankFeatures(Feature):
         playerank_scores = defaultdict(lambda: defaultdict(float))
         for feature_list in self.get_features():
             for f in feature_list:
-                playerank_scores[f['match']][f['entity']]+=f['value']*weights[f['feature']]
+                if f['feature'] in weights: #check if feature have not been filtered
+                    playerank_scores[f['match']][f['entity']]+=f['value']*weights[f['feature']]
 
         result = []
         for match in playerank_scores:
