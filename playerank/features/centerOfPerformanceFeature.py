@@ -57,12 +57,13 @@ class centerOfPerformanceFeature(Feature):
             for p in players_pos:
                 positions = players_pos[p]
                 x,y,count = np.mean([x[0] for x in positions]),np.mean([x[1] for x in positions]),len(positions)
-                documents = [
-                    {'feature':'avg_x','entity':p,'match':match,'value':int(x)},
-                    {'feature':'avg_y','entity':p,'match':match,'value':int(y)},
-                    {'feature':'n_events','entity':p,'match':match,'value':count},
+                if count>MIN_EVENTS:
+                    documents = [
+                        {'feature':'avg_x','entity':p,'match':match,'value':int(x)},
+                        {'feature':'avg_y','entity':p,'match':match,'value':int(y)},
+                        {'feature':'n_events','entity':p,'match':match,'value':count},
 
-                ]
-                results+=documents
+                    ]
+                    results+=documents
 
         return results
