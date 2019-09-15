@@ -36,9 +36,9 @@ class centerOfPerformanceFeature(Feature):
             events = filter(select,events)
         players =  json.load(open(players_file))
 
-        goalkeepers_ids = [player['wyId'] for player in players
-                                if player['role']['name']=='Goalkeeper']
-
+        goalkeepers_ids = {player['wyId']:'GK' for player in players
+                                if player['role']['name']=='Goalkeeper'}
+        events = filter(lambda x: x['playerId'] not in goalkeepers_ids,events )
         aggregated_features = defaultdict(lambda : defaultdict(lambda: defaultdict(int)))
 
         MIN_EVENTS = 10
