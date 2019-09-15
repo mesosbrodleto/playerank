@@ -379,7 +379,7 @@ class Clusterer(BaseEstimator, ClusterMixin):
 
         return ss
 
-    def _generate_matrix(self, ss):
+    def _generate_matrix(self, ss, kind = 'multi'):
         """
         Generate a matrix for optimizing the predict function
         """
@@ -389,19 +389,24 @@ class Clusterer(BaseEstimator, ClusterMixin):
         for i in range(0, 101):
             for j in range(0, 101):
                 X.append([i, j])
-
-        multi_labels = self._predict_with_silhouette(X, ss)
-        for row, labels in zip(X, multi_labels):
-            matrix[tuple(row)] = labels
+        if kind == 'multi':
+            multi_labels = self._predict_with_silhouette(X, ss)
+            for row, labels in zip(X, multi_labels):
+                matrix[tuple(row)] = labels
+        else:
+            for row, labels in zip(X, self.labels_):
+                matrix[tuple(row)] = labels
         self._matrix = matrix
 
     def get_clusters_matrix(self, kind = 'single'):
         roles_matrix = {}
-        if kind != 'single':
-            m= self._matrix.items()
-
-        else:
-            m = self._matrix_single.items()
+        m= self._matrix.items()
+        # if kind != 'single':
+        #     m= self._matrix.items()
+        #
+        # else:
+        #     m = self._matrix_single.items()
+        
         for k,v in  m:
             x,y = int(k[0]),int(k[1])
             if k[0] not in roles_matrix:
@@ -428,15 +433,13 @@ class Clusterer(BaseEstimator, ClusterMixin):
         X = dataframe.values
 
         self._find_clusters(X)      # find the clusters with kmeans
-        if kind == 'single':
-            players_and_matches_and_roles = []
-            for player_id, match_id, label in zip(player_ids, match_ids, self.labels_):
-                players_and_matches_and_roles.append({'player_id': player_id, 'match_id': match_id, 'role': int(label)})
-            json.dump(players_and_matches_and_roles, open('%s.json' %filename, 'w'))
-            return self
+        if kind != 'single':
 
-        silhouette_scores = self._cluster_borderline(X) # assign multiclusters to borderline performances
-        self._generate_matrix(silhouette_scores)    # generate the matrix for optimizing the predict function
+
+            silhouette_scores = self._cluster_borderline(X) # assign multiclusters to borderline performances
+            self._generate_matrix(silhouette_scores)    # generate the matrix for optimizing the predict function
+        else:
+            self._generate_matrix(None, kind = 'single') #no silhouette scores if kind single
         if self.verbose:
             print ("DONE.")
 
