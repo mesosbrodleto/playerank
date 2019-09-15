@@ -1,26 +1,7 @@
 # /usr/local/bin/python
-import cPickle as pkl
 from collections import defaultdict, OrderedDict, Counter
 import numpy as np
-from scipy import optimize
-from scipy.stats import gaussian_kde
-#from utils import *
-from sklearn.base import BaseEstimator
-from sklearn.svm import LinearSVC
-from sklearn.model_selection import cross_val_score
-from sklearn.dummy import DummyClassifier
-from sklearn.feature_selection import VarianceThreshold
-from sklearn.model_selection import GridSearchCV, StratifiedKFold
-from sklearn.feature_selection import RFECV
-from scipy.spatial.distance import euclidean
-from sklearn.preprocessing import StandardScaler, LabelEncoder
-from sklearn.metrics import silhouette_score, silhouette_samples
-from sklearn.cluster import KMeans, MiniBatchKMeans
-from sklearn.base import BaseEstimator, ClusterMixin
-from sklearn.externals.joblib import Parallel, delayed
-from sklearn.metrics.pairwise import pairwise_distances
-from itertools import combinations
-from sklearn.utils import check_random_state
+
 from sklearn.preprocessing import MinMaxScaler
 
 class Rater():
