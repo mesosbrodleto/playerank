@@ -327,7 +327,7 @@ class Clusterer(BaseEstimator, ClusterMixin):
         for k in range_n_clusters:
 
             # computation
-            kmeans = MiniBatchKMeans(n_clusters=k, init='k-means++', max_iter=100, n_init=1,
+            kmeans = MiniBatchKMeans(n_clusters=k, init='k-means++', max_iter=1000, n_init=1,
                                random_state =self.random_state)
             kmeans.fit(X)
             cluster_labels = kmeans.labels_
@@ -394,7 +394,7 @@ class Clusterer(BaseEstimator, ClusterMixin):
             for row, labels in zip(X, multi_labels):
                 matrix[tuple(row)] = labels
         else:
-            for row, labels in zip(X, self.labels_):
+            for row, labels in zip(X, self.kmeans_.predict(X)):
                 matrix[tuple(row)] = labels
         self._matrix = matrix
 
@@ -406,12 +406,13 @@ class Clusterer(BaseEstimator, ClusterMixin):
         #
         # else:
         #     m = self._matrix_single.items()
-        
+
         for k,v in  m:
             x,y = int(k[0]),int(k[1])
             if k[0] not in roles_matrix:
                 roles_matrix[x] = {}
             roles_matrix[x][y] = "-".join(map(str,v)) if kind !='single' else int(v) #casting with python int, otherwise it's not json serializable
+        print (roles_matrix[50])
         return roles_matrix
 
     def fit(self, player_ids, match_ids, dataframe, y=None, kind='single', filename='clusters'):
