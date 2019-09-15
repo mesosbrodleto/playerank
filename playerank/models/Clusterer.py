@@ -345,7 +345,7 @@ class Clusterer(BaseEstimator, ClusterMixin):
 
             self.k2silhouettes_[k] = silhouette
 
-        kmeans = MiniBatchKMeans(n_clusters=best_k, init='k-means++', max_iter=100, n_init=1,
+        kmeans = MiniBatchKMeans(n_clusters=best_k, init='k-means++', max_iter=10000, n_init=1,
                                  random_state=self.random_state)
         kmeans.fit(X)
         self.kmeans_ = kmeans
@@ -412,7 +412,6 @@ class Clusterer(BaseEstimator, ClusterMixin):
             if k[0] not in roles_matrix:
                 roles_matrix[x] = {}
             roles_matrix[x][y] = "-".join(map(str,v)) if kind !='single' else int(v) #casting with python int, otherwise it's not json serializable
-        print (roles_matrix[50])
         return roles_matrix
 
     def fit(self, player_ids, match_ids, dataframe, y=None, kind='single', filename='clusters'):
