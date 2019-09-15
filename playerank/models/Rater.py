@@ -45,9 +45,10 @@ class Rater():
 
         for i, row in enumerate(X):
 
-            goal_index = feature_names.index(goal_feature)
-            pr_index = feature_names.index(score_feature)
-            rating = self.get_rating(row[score_feature], row[goal_index])
+            goal_index = feature_names.get_loc(goal_feature)
+            pr_index = feature_names.get_loc(score_feature)
+
+            rating = self.get_rating(row[pr_index], row[goal_index],)
             self.ratings_.append(rating)
         self.ratings_ = MinMaxScaler().fit_transform(np.array(self.ratings_).reshape(-1, 1))[:, 0]
 
