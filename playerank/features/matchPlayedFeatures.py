@@ -73,7 +73,7 @@ class matchPlayedFeatures(Feature):
                 for player,gs in goals_scored.items():
                     if player not in goalkeepers_ids:
                         document = {'match':matchId,'entity':player,'feature':'goalScored',
-                                'value': gs}
+                                'value': int(gs) if gs is not None else 0}
                         result.append (document)
                         ## adding timestamp and team for each player
                         document = {'match':matchId,'entity':player,'feature':'timestamp',

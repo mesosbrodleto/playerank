@@ -37,7 +37,7 @@ class playerankFeatures(Feature):
                     'match': match,
                     'entity': player,
                     'feature' : 'playerankScore',
-                    'value' : playerank_scores[match][player]
+                    'value' : float(playerank_scores[match][player])
                 }
                 result.append(document)
         print ("[playerankFeatures] playerank scores computed. %s performance processed"%len(result))
