@@ -8,7 +8,7 @@ Playerank framework consists of three main components:
   - ranking module
 
 An exhaustive description of playerank framework is available here:
-< playerank paper + link >
+https://dl.acm.org/citation.cfm?id=3343172
 
 To build player rankings from soccer logs data, following steps are required:
 
@@ -18,5 +18,9 @@ To build player rankings from soccer logs data, following steps are required:
 4 - aggregate performance scores (ranking)
 
 
-Soccer logs data is publicy available, upon citation, from this link: < data paper >
+Soccer logs data is publicy available, upon citation, from this link: https://figshare.com/collections/Soccer_match_event_dataset/4415000/2
+
+A sample of the complete flow of Playerank framework is available here: 
+
+http://bit.ly/playerank_tutorial
 
