@@ -23,6 +23,7 @@ class Rater():
         self.ratings_ = []
 
     def get_rating(self, weighted_sum, goals):
+        print (weighted_sum)
         return weighted_sum * (1 - self.alpha_goal) + self.alpha_goal * goals
 
     def predict(self, dataframe, goal_feature, score_feature, filename='ratings'):
