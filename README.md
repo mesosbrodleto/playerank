@@ -22,5 +22,5 @@ Soccer logs data is publicy available, upon citation, from this link: https://fi
 
 A sample of the complete flow of Playerank framework is available here: 
 
-http://bit.ly/playerank_tutorial
+http://bit.ly/playerank_Tutorial
 
