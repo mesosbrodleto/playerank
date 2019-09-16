@@ -48,7 +48,7 @@ class Rater():
             goal_index = feature_names.get_loc(goal_feature)
             pr_index = feature_names.get_loc(score_feature)
 
-            rating = self.get_rating(row[pr_index], row[goal_index],)
+            rating = self.get_rating(map(float,row[pr_index]), map(float,row[goal_index]),)
             self.ratings_.append(rating)
         self.ratings_ = MinMaxScaler().fit_transform(np.array(self.ratings_).reshape(-1, 1))[:, 0]
 
