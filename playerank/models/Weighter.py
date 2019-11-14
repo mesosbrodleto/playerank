@@ -91,7 +91,7 @@ class Weighter(BaseEstimator):
         if scaled:
             X = StandardScaler().fit_transform(X)
 
-        self.feature_names_ = dataframe.columns
+        self.feature_names_ = dataframe.loc[:, dataframe.columns != target].columns
         self.clf_ = LinearSVC(fit_intercept=True, dual = False,  max_iter = 50000,random_state=self.random_state_)
 
         #f1_score = np.mean(cross_val_score(self.clf_, X, y, cv=2, scoring='f1_weighted'))
