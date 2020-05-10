@@ -64,10 +64,11 @@ class qualityFeatures(Feature):
         events = []
         for file in glob.glob("%s/*.json"%events_path):
             data = json.load(open(file))
-            events += filter(lambda x: x['matchPeriod'] in ['1H','2H'] and x['playerId'] not in  goalkeepers_ids,data) #excluding penalties events
-            print ("[qualityFeatures] added %s events"%len(data))
-        if select:
-            events = filter(select,events)
+            if select:
+                data = list(filter(select,data))
+            events += list(filter(lambda x: x['matchPeriod'] in ['1H','2H'] and x['playerId'] not in  goalkeepers_ids,data)) #excluding penalties events
+            print ("[qualityFeatures] added %s events from %s"%(len(data), file))
+        
 
         for evt in events:
             if evt['eventId'] in event2subevent2outcome:

@@ -29,8 +29,11 @@ class centerOfPerformanceFeature(Feature):
 
         events = []
         for file in glob.glob("%s/*.json"%events_path):
-            events += json.load(open(file))
-            print ("[centerOfPerformanceFeature] added %s events"%len(events))
+            data = json.load(open(file))
+            if select:
+                data = list(filter(select,data))
+            events += data
+            print ("[centerOfPerformanceFeature] added %s events from %s"%(len(data),file))
         events = filter(lambda x: x['playerId']!=0,events) #filtering out referee
         if select:
             events = filter(select,events)

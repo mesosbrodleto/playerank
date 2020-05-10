@@ -31,7 +31,7 @@ class matchPlayedFeatures(Feature):
         for file in glob.glob("%s/*.json"%matches_path):
             matches += json.load(open(file))
         if select:
-            matches = filter(select,matches)
+            matches = list(filter(select,matches))
 
         print ("[matchPlayedFeatures] processing %s matches"%len(matches))
         result = []
