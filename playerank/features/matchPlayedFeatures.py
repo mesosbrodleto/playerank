@@ -28,7 +28,7 @@ class matchPlayedFeatures(Feature):
         goalkeepers_ids = [player['wyId'] for player in players
                                 if player['role']['name']=='Goalkeeper']
         matches= []
-        for file in glob.glob("%s/*.json"%matches_path):
+        for file in glob.glob("%s"%matches_path):
             matches += json.load(open(file))
         if select:
             matches = list(filter(select,matches))

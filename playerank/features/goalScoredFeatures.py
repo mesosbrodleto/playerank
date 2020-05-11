@@ -20,7 +20,7 @@ class goalScoredFeatures(Feature):
         list of documents in the format: match: matchId, entity: team, feature: feature, value: value
         """
         matches =[]
-        for file in glob.glob("%s/*.json"%matches_path):
+        for file in glob.glob("%s"%matches_path):
             data = json.load(open(file))
             matches += data
             print ("[GoalScored features] added %s matches"%len(data))

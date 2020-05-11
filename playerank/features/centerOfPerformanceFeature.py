@@ -28,7 +28,7 @@ class centerOfPerformanceFeature(Feature):
 
 
         events = []
-        for file in glob.glob("%s/*.json"%events_path):
+        for file in glob.glob("%s"%events_path):
             data = json.load(open(file))
             if select:
                 data = list(filter(select,data))
