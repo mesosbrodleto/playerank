@@ -29,13 +29,14 @@ class goalScoredFeatures(Feature):
         result =[]
 
         for match in matches:
-            for team in match['teamsData']:
-                document = {}
-                document['match'] = match['wyId']
-                document['entity'] = team
-                document['feature'] = 'goal-scored'
-                document['value'] = match['teamsData'][team]['score']
-                result.append(document)
+            if 'teamsData' in match:
+                for team in match['teamsData']:
+                    document = {}
+                    document['match'] = match['wyId']
+                    document['entity'] = team
+                    document['feature'] = 'goal-scored'
+                    document['value'] = match['teamsData'][team]['score']
+                    result.append(document)
 
 
         return result
