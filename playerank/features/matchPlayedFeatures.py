@@ -46,19 +46,19 @@ class matchPlayedFeatures(Feature):
             for team in match['teamsData']:
                 minutes_played = {}
                 goals_scored = {}
-                if 'substitutions' in match['teamsData'][team]['formation']:
+                if match['teamsData'][team]['hasFormation']==1 and 'substitutions' in match['teamsData'][team]['formation']:
                     for sub in match['teamsData'][team]['formation']['substitutions']:
                         if type(sub) == dict:
                             minute = sub['minute']
                             minutes_played[sub['playerOut']] = minute
                             minutes_played[sub['playerIn']] = duration - minute
-                if 'lineup' in match['teamsData'][team]['formation']:
+                if match['teamsData'][team]['hasFormation']==1 and  'lineup' in match['teamsData'][team]['formation']:
                     for player in match['teamsData'][team]['formation']['lineup']:
                         goals_scored[player['playerId']] = player['goals']
                         if player['playerId'] not in minutes_played:
                             #player not substituted
                             minutes_played[player['playerId']] = duration
-                if 'bench' in match['teamsData'][team]['formation']:
+                if match['teamsData'][team]['hasFormation']==1 and  'bench' in match['teamsData'][team]['formation']:
                     for player in match['teamsData'][team]['formation']['bench']:
                         goals_scored[player['playerId']] = player['goals']
                         if player['playerId'] not in minutes_played:
