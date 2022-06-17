@@ -7,7 +7,7 @@ setup(
     install_requires=[
           'pandas==0.23.4',
           'scipy==0.17.1',
-          'numpy==1.11.0',
+          'numpy==1.21.0',
           'scikit_learn==0.21.3',
       ],
     license='Creative Commons Attribution-Noncommercial-Share Alike license',
