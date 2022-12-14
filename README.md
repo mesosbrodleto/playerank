@@ -7,8 +7,8 @@ Playerank is designed to work with [soccer-logs](https://www.nature.com/articles
 As described by the figure below, the PlayeRank framework consists of four main components:
 <ol type="a">
 	<li>soccer-logs database</li>
-	<li>learning module</li>
 	<li>rating module</li>
+	<li>learning module</li>
 	<li>ranking module</li>
 </ol>
 
