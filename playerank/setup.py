@@ -6,7 +6,7 @@ setup(
     packages=['playerank',],
     install_requires=[
           'pandas==0.23.4',
-          'scipy==0.17.1',
+          'scipy==1.10.0',
           'numpy==1.11.0',
           'scikit_learn==0.21.3',
       ],
