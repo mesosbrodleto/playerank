@@ -17,7 +17,7 @@ from sklearn.metrics import silhouette_score, silhouette_samples
 from sklearn.cluster import KMeans, MiniBatchKMeans
 from sklearn.base import BaseEstimator, ClusterMixin
 from joblib import Parallel, delayed
-import
+
 from sklearn.metrics.pairwise import pairwise_distances
 from itertools import combinations
 from sklearn.utils import check_random_state
